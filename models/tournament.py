@@ -25,8 +25,8 @@ class Tournament:
         return len(self.players)
 
     def get_suisse_sorted_players(self):
-        s = sorted(self.players, key=lambda player: player[0].rank, reverse=True)  # sort by score
-        return sorted(s, key=lambda player: player[1], reverse=True)  # sort by rank
+        s = sorted(self.players, key=lambda player: player[0].rank, reverse=True)  # sort by rank
+        return sorted(s, key=lambda player: player[1], reverse=True)  # sort by score
         # return sorted(self.players, key=itemgetter(1, 2), reverse=True)
 
     def create_round(self):
@@ -37,6 +37,9 @@ class Tournament:
         return round
 
     def generate_matches(self):
+        if self.rounds_left < 1:
+            return
+
         matches = []
         round = self.create_round()
         players = self.get_suisse_sorted_players()
@@ -51,17 +54,25 @@ class Tournament:
                     y += 1
                 match = Match(players[0][0], players[y][0])
                 matches.append(match)
-                del players[0]
                 del players[y]
-
+                del players[0]
         round.add_matches(matches)
 
     def played_against(self, player_one, player_two):
         opposition = []
         for round in self.rounds:
-            for matches in round.matches:
-                opposition.append([matches[0][0], matches[1][0]])
+            for match in round.matches:
+                opposition.append([match.result[0][0], match.result[1][0]])
 
         return [player_one, player_two] in opposition or [player_two, player_one] in opposition
 
-
+    def update_players_score(self):
+        for player in self.players:
+            score = 0
+            for round in self.rounds:
+                for match in round.matches:
+                    if player[0] == match.result[0][0]:
+                        score += match.result[0][1]
+                    if player[0] == match.result[1][0]:
+                        score += match.result[1][1]
+            player[1] = score

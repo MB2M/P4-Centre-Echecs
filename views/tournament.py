@@ -1,5 +1,6 @@
 from models.tournament import Tournament
 from models.round import Round
+from models.match import Match
 
 
 def launch():
@@ -20,6 +21,7 @@ def menu(tournament: Tournament):
     print('    1) Create players')
     print('    2) Add players from database')
     print('    3) Generate next round', '({} round(s) left)'.format(tournament.rounds_left))
+    print('    4) Enter scores')
 
 
 def scoring_menu(tournament: Tournament):
@@ -38,5 +40,13 @@ def scoring(round: Round):
     print('Choose the match to score :')
     print('    0) <== Back')
     for i, match in enumerate(round.matches, start=1):
-        print('    ' + str(i) + ') ' + match.result[0][0] + ' [' + match.result[0][1] + '] vs. ['
-              + match.result[1][1] + ']' + match.result[1][0])
+        print('    ' + str(i) + ') ' + match.result[0][0].first_name + ',' + match.result[0][0].last_name +  ' [' + str(match.result[0][1]) + '] vs. ['
+              + str(match.result[1][1]) + ']' + match.result[1][0].first_name + ',' + match.result[1][0].last_name)
+
+
+def result(match: Match):
+    print('    0) <== Back')
+    print('    1) Winner : ' + match.result[0][0].first_name + ',' + match.result[0][0].first_name)
+    print('    2) Winner : ' + match.result[1][0].first_name + ',' + match.result[1][0].first_name)
+    print('    3) Draw')
+    print('    4) Unset')
