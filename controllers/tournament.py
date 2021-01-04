@@ -1,6 +1,7 @@
 from controllers import main as main_controller
+from controllers import player as player_controller
 from models.tournament import Tournament
-from models.player import Player
+from models.round import Round
 from views import tournament as tournament_view
 from views import player as player_view
 
@@ -8,13 +9,13 @@ from views import player as player_view
 def index():
     tournament_view.launch()
     choice = input()
-    if choice == '0':
+    if choice == '0':  # back last Menu
         return main_controller.index()
-    if choice == '1':
+    if choice == '1':  # Create Tournament
         tournament = new()
         if tournament:
             return menu(tournament)
-    elif choice == '2':
+    elif choice == '2':  # Retrieve Tournament
         return print("TODO: choix 2")
     else:
         return index()
@@ -32,26 +33,38 @@ def new():
 def menu(tournament: Tournament):
     tournament_view.menu(tournament)
     choice = input()
-    if choice == '0':
+
+    if choice == '0':  # back last Menu
         return index()
-    if choice == '1':
-        last_name = input('Last name : ')
-        first_name = input('First name : ')
-        birthday = input('Birthday (dd/mm/aaaaa) : ')
-        gender = input('gender (m/w) : ')
-        rank = input('rank : ')
-    elif choice == '2':
+    if choice == '1':  # Create player
+        player = player_controller.add_player()
+    elif choice == '2':  # Retrieve player
         player_view.list_of_players()
         player_index = input()
-        # Récupère les attributs du player depuis la  DB
+        # Récupère les attributs du player depuis la  DB et l'instancie
+        # player
     elif choice == '3':
-        return create_round(tournament)
+        tournament.generate_matches()
+        return menu(tournament)
+    elif choice == '4':
+        return scoring_menu(tournament)
     else:
         return menu(tournament)
-    player = Player(last_name, first_name, birthday, gender, rank)
+
     tournament.add_player(player)
     return menu(tournament)
 
 
-def create_round():
-    pass
+def scoring_menu(tournament: Tournament):
+    tournament_view.scoring_menu(tournament)
+    choice = input()
+    if choice == '0':  # back last Menu
+        return menu(tournament)
+    for i, round in enumerate(tournament.rounds, start=1):
+        if choice == str(i):
+            return scoring(round)
+
+    return scoring_menu(tournament)
+
+def scoring(round: Tournament):
+    tournament_view.scoring(round)

@@ -5,3 +5,7 @@ class Player:
         self.birthday = birthday
         self.gender = gender
         self.rank = rank
+
+    @classmethod
+    def get_all(cls):
+        pass

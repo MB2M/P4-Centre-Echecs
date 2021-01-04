@@ -16,5 +16,9 @@ class Round:
     def add_match(self, match: Match):
         self.matches.append(match)
 
+    def add_matches(self, matches: list):
+        for match in matches:
+            self.matches.append(match)
+
     def is_closed(self):
         return self.end_time
