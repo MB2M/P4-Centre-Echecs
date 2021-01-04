@@ -1,3 +1,6 @@
+from models.player import Player
+
+
 class Tournament:
     def __init__(self, name, place, date, rounds_number=4):
         self.name = name
@@ -7,13 +10,11 @@ class Tournament:
         self.rounds = []
         self.players = []
         self.time_control = "bullet"
-        self._description = ""
+        self.description = ""
 
-    @property
-    def description(self):
-        return self._description
+    def add_player(self, player: Player):
+        self.players.append(player)
 
-    @description.setter
-    def description(self, text):
-        self.description = text
+    def player_count(self):
+        return len(self.players)
 
