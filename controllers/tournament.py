@@ -14,8 +14,7 @@ def index():
         return main_controller.index()
     if choice == '1':  # Create Tournament
         tournament = new()
-        if tournament:
-            return menu(tournament)
+        return manage(tournament)
     elif choice == '2':  # Retrieve Tournament
         return print("TODO: choix 2")
     else:
@@ -31,58 +30,45 @@ def new():
     return Tournament(name, place, date, round_number)
 
 
-def menu(tournament: Tournament):
+def manage(tournament: Tournament):
     tournament_view.menu(tournament)
     choice = input()
 
     if choice == '0':  # back last Menu
         return index()
-    if choice == '1':  # Create player
-        player = player_controller.add_player()
-    elif choice == '2':  # Retrieve player
-        player_view.list_of_players()
-        player_index = input()
-        # Récupère les attributs du player depuis la  DB et l'instancie
-        # player
-    elif choice == '3':
-        tournament.generate_matches()
-        return menu(tournament)
-    elif choice == '4':
-        return scoring_menu(tournament)
+
+    if tournament.player_count() < 2 * tournament.rounds_total:
+        player = None
+        if choice == '1':  # Create player
+            player = player_controller.add_player()
+            tournament.add_player(player)
+    elif not tournament.rounds or tournament.rounds[-1].is_closed():
+        if choice == '2':
+            tournament.generate_matches()
     else:
-        return menu(tournament)
+        if choice == '3':
+            return match_index(tournament, tournament.rounds[-1])
+        if choice == '4' and tournament.rounds[-1].total_scores() == tournament.rounds_total:
+            tournament.rounds[-1].close()
 
-    tournament.add_player(player)
-    return menu(tournament)
+    return manage(tournament)
 
 
-def scoring_menu(tournament: Tournament):
-    tournament_view.scoring_menu(tournament)
+def match_index(tournament: Tournament, round: Round):
+    tournament_view.scoring_menu(round)
     choice = input()
     if choice == '0':  # back last Menu
-        return menu(tournament)
-    for i, round in enumerate(tournament.rounds, start=1):
-        if choice == str(i):
-            return scoring(tournament, round)
-
-    return scoring_menu(tournament)
-
-
-def scoring(tournament: Tournament, round: Round):
-    tournament_view.scoring(round)
-    choice = input()
-    if choice == '0':  # back last Menu
-        return scoring_menu(tournament)
+        return manage(tournament)
     for i, match in enumerate(round.matches, start=1):
         if choice == str(i):
-            return result(tournament, round, match)
+            return score(tournament, round, match)
 
 
-def result(tournament: Tournament, round: Round, match: Match):
-    tournament_view.result(match)
+def score(tournament: Tournament, round: Round, match: Match):
+    tournament_view.result_menu(match)
     choice = input()
     if choice == '0':  # back last Menu
-        return scoring(tournament, round)
+        return match_index(tournament, round)
     if choice == '1':
         match.set_result(1, 0)
     elif choice == '2':
@@ -92,7 +78,16 @@ def result(tournament: Tournament, round: Round, match: Match):
     elif choice == '4':
         match.set_result(0, 0)
     else:
-        return result(tournament, round, match)
+        return score(tournament, round, match)
 
     tournament.update_players_score()
-    return scoring(tournament, round)
+    return match_index(tournament, round)
+
+
+def tournament_index():
+    tournaments = Tournament.TOURNAMENT
+    tournament_view.tournaments(tournaments)
+    choice = input()
+    if choice == '0':
+        return main_controller.index()
+    return Tournament.get_tournament(int(choice) - 1)

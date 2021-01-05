@@ -8,3 +8,6 @@ class Match:
     def set_result(self, score_a, score_b):
         self.result[0][1] = score_a
         self.result[1][1] = score_b
+
+    def total_score(self):
+        return self.result[0][1] + self.result[1][1]

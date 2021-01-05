@@ -1,11 +1,10 @@
-import nums_from_string
-
 from models.player import Player
 from models.round import Round
 from models.match import Match
 
 
 class Tournament:
+    TOURNAMENT = []
 
     def __init__(self, name, place, date, rounds_number=4):
         self.name = name
@@ -19,7 +18,7 @@ class Tournament:
         self.rounds_left = self.rounds_total
 
     def add_player(self, player: Player):
-        self.players.append([player, 0]) # second argument is the score
+        self.players.append([player, 0])  # second argument is the score
 
     def player_count(self):
         return len(self.players)
@@ -62,7 +61,7 @@ class Tournament:
         opposition = []
         for round in self.rounds:
             for match in round.matches:
-                opposition.append([match.result[0][0], match.result[1][0]])
+                opposition.append([match.result_menu[0][0], match.result_menu[1][0]])
 
         return [player_one, player_two] in opposition or [player_two, player_one] in opposition
 
@@ -71,8 +70,23 @@ class Tournament:
             score = 0
             for round in self.rounds:
                 for match in round.matches:
-                    if player[0] == match.result[0][0]:
-                        score += match.result[0][1]
-                    if player[0] == match.result[1][0]:
-                        score += match.result[1][1]
+                    if player[0] == match.result_menu[0][0]:
+                        score += match.result_menu[0][1]
+                    if player[0] == match.result_menu[1][0]:
+                        score += match.result_menu[1][1]
             player[1] = score
+
+    def get_players(self):
+        return [player[0] for player in self.players]
+
+    def get_players_by_rank(self):
+        return sorted(self.get_players(), key=lambda player: player['rank'], reverse=True)
+
+    def get_players_by_alpha(self):
+        s = sorted(self.get_players(), key=lambda player: player['first_name'])
+        return sorted(s, key=lambda player: player['last_name'])
+
+    @classmethod
+    def get_tournament(cls, index):
+        return cls.TOURNAMENT[index]
+

@@ -22,3 +22,6 @@ class Round:
 
     def is_closed(self):
         return self.end_time
+
+    def total_scores(self):
+        return sum(match.total_score() for match in self.matches)
