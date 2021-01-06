@@ -8,7 +8,8 @@ def menu():
     print('What do you want to do?')
     print('    1) Player Manager')
     print('    2) Tournament Manager')
-    print('    3) Exit Program')
+    print('    3) Report')
+    print('    4) Exit Program')
 
 
 def end():

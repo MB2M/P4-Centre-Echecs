@@ -3,7 +3,7 @@ def launch():
     print('Player Menu')
     print('===========')
     print('    0) <== Back')
-    print('    1) Create a Player')
+    print('    1) Create a player')
     print('    2) Edit player rank')
 
 
@@ -16,3 +16,9 @@ def rank(player):
     print(player.first_name, ',', player.last_name)
     print('Actual Rank :', player.rank)
     print('Enter new rank: ')
+
+
+def players(players):
+    print('    0) <== Back')
+    for i, player in enumerate(players, start=1):
+        print('    ' + str(i) + ') ' + player.last_name + ' , ' + player.first_name)

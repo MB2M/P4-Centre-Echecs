@@ -1,6 +1,4 @@
-from models.tournament import Tournament
-from models.round import Round
-from models.match import Match
+from models.player import Player
 
 
 def launch():
@@ -9,25 +7,24 @@ def launch():
     print('===============')
     print('    0) <== Back')
     print('    1) Create a new tournament')
-    print('    2) Open a tournament')
-    print('    6) Reports')
+    print('    2) Load a tournament')
 
 
-def menu(tournament: Tournament):
+def menu(tournament):
     print('====================================================')
     print('Tournament : ' + tournament.name)
     print('====================================================')
     print('    0) <== Back')
-    if tournament.rounds_left == 0:
-        print('*** Tournament is over ***')
+    if tournament.finished():
+        print('*** TOURNAMENT IS OVER ***')
     elif len(tournament.players) < 2 * tournament.rounds_total:
         print('*** Add',
-              str(tournament.rounds_total * 2 - tournament.player_count()),
+              str(tournament.rounds_total * 2 - tournament.player_count),
               'players before generating rounds ***')
         print('    1) Add players')
     else:
         if not tournament.rounds or tournament.rounds[-1].is_closed():
-            print('    2) Generate next round', '({} round(s) left)'.format(tournament.rounds_left))
+            print('    2) Generate next round')
         else:
             print('*** Running round : ' + tournament.rounds[-1].name)
             print('    3) Enter scores for current round')
@@ -35,21 +32,20 @@ def menu(tournament: Tournament):
                 print('    4) Close current round')
 
 
-def scoring_menu(round: Round):
+def scoring_menu(round):
     print('----------------------------------------------------')
     print('SCORING the round : ' + round.name)
     print('----------------------------------------------------')
     print('Choose the match to score :')
     print('    0) <== Back')
     for i, match in enumerate(round.matches, start=1):
-        print('    ' + str(i) + ') ' + match.result_menu[0][0].first_name + ',' + match.result_menu[0][0].last_name + ' [' + str(match.result_menu[0][1]) + '] vs. ['
-              + str(match.result_menu[1][1]) + ']' + match.result_menu[1][0].first_name + ',' + match.result_menu[1][0].last_name)
+        print('    ' + str(i) + ') ' + match.result_to_string())
 
 
-def result_menu(match: Match):
+def result_menu(match):
     print('    0) <== Back')
-    print('    1) Winner : ' + match.result[0][0].first_name + ',' + match.result[0][0].first_name)
-    print('    2) Winner : ' + match.result[1][0].first_name + ',' + match.result[1][0].first_name)
+    print('    1) Winner : ' + Player.get_player(match.result[0][0]).name)
+    print('    2) Winner : ' + Player.get_player(match.result[1][0]).name)
     print('    3) Draw')
     print('    4) Unset')
 
