@@ -7,7 +7,10 @@ class Player:
         def to_db(cls, func):
             def save_into_db(*args, **kwargs):
                 func(*args, **kwargs)
-                serialized_players = [player.serialize() for player in Player.PLAYERS]
+                serialized_players = [
+                    player.serialize()
+                    for player in Player.PLAYERS
+                ]
                 db = TinyDB('db.json')
                 players_table = db.table('players')
                 players_table.truncate()
@@ -42,7 +45,9 @@ class Player:
 
     @classmethod
     def get_all_by_rank(cls):
-        return sorted(cls.get_all(), key=lambda player: int(player.rank), reverse=True)
+        return sorted(cls.get_all(),
+                      key=lambda player: int(player.rank),
+                      reverse=True)
 
     @classmethod
     def get_all_by_alpha(cls):

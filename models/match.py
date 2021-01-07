@@ -14,7 +14,8 @@ class Match:
 
     def result_to_string(self):
         return (Player.get_player(self.result[0][0]).name
-                + '[' + str(self.result[0][1]) + '] vs. [' + str(self.result[1][1]) + ']'
+                + ' [{}]'.format(str(self.result[0][1]))
+                + ' vs. [{}] '.format(str(self.result[1][1]))
                 + Player.get_player(self.result[1][0]).name
                 )
 
@@ -35,4 +36,3 @@ class Match:
         return {
             'match_list': self.result_to_string()
         }
-

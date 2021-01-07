@@ -11,7 +11,10 @@ class Tournament:
         def to_db(cls, func):
             def save_into_db(*args, **kwargs):
                 func(*args, **kwargs)
-                serialized_tournament = [tournament.serialize() for tournament in Tournament.TOURNAMENT]
+                serialized_tournament = [
+                    tournament.serialize()
+                    for tournament in Tournament.TOURNAMENT
+                ]
                 db = TinyDB('db.json')
                 tournaments_table = db.table('tournaments')
                 tournaments_table.truncate()
@@ -21,7 +24,8 @@ class Tournament:
 
     TOURNAMENT = []
 
-    def __init__(self, name, place, date, time_control, description, rounds_total=4):
+    def __init__(self, name, place, date,
+                 time_control, description, rounds_total=4):
         self.name = name
         self.place = place
         self.date = date
@@ -49,9 +53,16 @@ class Tournament:
         return len(self.players)
 
     def get_suisse_sorted_players(self):
-        s = sorted(self.players, key=lambda player: int(Player.get_player(player[0]).rank),
-                   reverse=True)  # sort by rank
-        return sorted(s, key=lambda player: float(player[1]), reverse=True)  # then sort by score
+        s = sorted(
+            self.players,
+            key=lambda player: int(Player.get_player(player[0]).rank),
+            reverse=True
+        )  # sort by rank
+        return sorted(
+            s,
+            key=lambda player: float(player[1]),
+            reverse=True
+        )  # then sort by score
 
     def create_round(self):
         round_name = 'Round' + str(len(self.rounds) + 1)
@@ -86,7 +97,8 @@ class Tournament:
             for match in round.matches:
                 opposition.append([match.result[0][0], match.result[1][0]])
 
-        return [player_one, player_two] in opposition or [player_two, player_one] in opposition
+        return [player_one, player_two] in opposition \
+            or [player_two, player_one] in opposition
 
     @Decorators.to_db
     def update_players_score(self):
@@ -100,14 +112,28 @@ class Tournament:
                         score += match.result[1][1]
             player[1] = score
 
+    def get_players(self):
+        return [player[0] for player in self.players]
+
     def get_players_by_score(self):
-        return sorted(self.players, key=lambda player: float(player[1]), reverse=True)
+        return sorted(
+            self.players,
+            key=lambda player: float(player[1]),
+            reverse=True
+        )
 
     def get_players_by_rank(self):
-        return sorted(self.get_players(), key=lambda player: int(Player.get_player(player).rank), reverse=True)
+        return sorted(
+            self.get_players(),
+            key=lambda player: int(Player.get_player(player).rank),
+            reverse=True
+        )
 
     def get_players_by_alpha(self):
-        return sorted(self.get_players(), key=lambda player: Player.get_player(player).name)
+        return sorted(
+            self.get_players(),
+            key=lambda player: Player.get_player(player).name
+        )
 
     @Decorators.to_db
     def close_last_round(self):
@@ -138,9 +164,12 @@ class Tournament:
         time_control = serialized_tournament['time_control']
         description = serialized_tournament['description']
         rounds_total = serialized_tournament['rounds_total']
-        tournament = Tournament(name, place, date, time_control, description, rounds_total)
-        tournament.rounds = [Round.deserialize(serialized_round) for serialized_round in
-                             serialized_tournament['rounds']]
+        tournament = Tournament(name, place, date, time_control,
+                                description, rounds_total)
+        tournament.rounds = [
+            Round.deserialize(serialized_round)
+            for serialized_round in serialized_tournament['rounds']
+        ]
         tournament.players = serialized_tournament['players']
 
         return tournament

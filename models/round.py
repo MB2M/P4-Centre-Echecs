@@ -30,7 +30,6 @@ class Round:
         return {
             'name': self.name,
             'start_time': self.start_time,
-            # 'matches': self.matches,
             'matches': [match.serialize() for match in self.matches],
             'end_time': self.end_time,
         }
@@ -40,7 +39,10 @@ class Round:
         name = serialized_round['name']
         round = Round(name)
         round.start_time = serialized_round['start_time']
-        round.matches = [Match.deserialize(serialized_match) for serialized_match in serialized_round['matches']]
+        round.matches = [
+            Match.deserialize(serialized_match)
+            for serialized_match in serialized_round['matches']
+        ]
         round.end_time = serialized_round['end_time']
         return round
 

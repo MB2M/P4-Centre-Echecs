@@ -21,4 +21,4 @@ def rank(player):
 def players(players):
     print('    0) <== Back')
     for i, player in enumerate(players, start=1):
-        print('    ' + str(i) + ') ' + player.last_name + ' , ' + player.first_name)
+        print('    ' + str(i) + ') ' + player.name)

@@ -21,15 +21,15 @@ def menu(tournament):
         print('*** Add',
               str(tournament.rounds_total * 2 - tournament.player_count),
               'players before generating rounds ***')
-        print('    1) Add players')
+        print('    2) Add players')
     else:
         if not tournament.rounds or tournament.rounds[-1].is_closed():
-            print('    2) Generate next round')
+            print('    3) Generate next round')
         else:
             print('*** Running round : ' + tournament.rounds[-1].name)
-            print('    3) Enter scores for current round')
+            print('    4) Enter scores for current round')
             if tournament.rounds[-1].total_scores() == tournament.rounds_total:
-                print('    4) Close current round')
+                print('    5) Close current round')
 
 
 def scoring_menu(round):
