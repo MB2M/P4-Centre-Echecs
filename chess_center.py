@@ -1,7 +1,7 @@
 #!/usr/local/bin/python
 # coding: utf8
 
-from controllers import main as main_controller
+from controllers2 import main as main_controller
 
 
 def main():
