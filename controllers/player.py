@@ -1,6 +1,6 @@
 import re
 
-from controllers2 import main as main_controller
+from controllers import main as main_controller
 from models.player import Player
 from views import player as player_view
 
