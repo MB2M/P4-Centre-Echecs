@@ -21,23 +21,31 @@ def index():
 
 
 def add_player():
-    last_name = input('Last name : ')
-    first_name = input('First name : ')
+    last_name = main_controller.input_with_options('Last name : ')
+    first_name = main_controller.input_with_options('First name : ')
 
-    match = None
-    regex = '^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$'
-    while not match:
-        birthday = input('Birthday (dd/mm/yyyy) : ')
-        match = re.match(regex, birthday)
+    date_regex = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])'
+                            r'/(0[1-9]|1[0-2])/[0-9]{4}$')
+    birthday = main_controller.input_with_options(
+        'Birthday (dd/mm/yyyy) : ',
+        date_regex,
+        'Please enter a valid date format (dd/mm/yyyy)',
+        loop=True
+    )
+    gender = main_controller.input_with_options(
+        'gender (m/w) : ',
+        re.compile(r'^[m|w]$'),
+        'Please enter m or w',
+        loop=True
+    )
 
-    gender = input('gender (m/w) : ')
-    while gender not in ['m', 'w']:
-        gender = input('gender (m/w) : ')
+    rank = main_controller.input_with_options(
+        'Current rank : ',
+        re.compile('^[0-9]+$'),
+        'Please enter en positive number',
+        loop=True
+    )
 
-    match = None
-    while not match:
-        rank = input('rank : ')
-        match = re.match('^[0-9]+$', rank)
     player = Player(last_name, first_name, birthday, gender, rank)
 
     Player.add_player(player)
@@ -45,10 +53,12 @@ def add_player():
 
 def edit_rank(player: Player):
     player_view.rank(player)
-    match = None
-    while not match:
-        rank = input()
-        match = re.match('^[0-9]+$', rank)
+    rank = main_controller.input_with_options(
+        '',
+        re.compile('^[0-9]+$'),
+        'Please enter en positive number',
+        loop=True
+    )
     player.set_rank(rank)
 
 

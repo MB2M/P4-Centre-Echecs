@@ -1,7 +1,7 @@
 import re
 
-from controllers import main as main_controller
-from controllers import player as player_controller
+from controllers import player as player_controller, \
+    main as main_controller
 from models.match import Match
 from models.player import Player
 from models.round import Round
