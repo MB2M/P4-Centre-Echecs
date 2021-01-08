@@ -1,6 +1,3 @@
-from models.player import Player
-
-
 def launch():
     print('===============')
     print('Tournament Menu')
@@ -46,8 +43,8 @@ def scoring_menu(round):
 def result_menu(match):
     print('Choose the result of the match :')
     print('    0) <== Back')
-    print('    1) Winner : ' + Player.get_player(match.result[0][0]).name)
-    print('    2) Winner : ' + Player.get_player(match.result[1][0]).name)
+    print('    1) Winner : ' + match.get_player_name(match.player_one))
+    print('    2) Winner : ' + match.get_player_name(match.player_two))
     print('    3) Draw')
     print('    4) Unset')
 

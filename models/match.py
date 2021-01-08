@@ -43,3 +43,7 @@ class Match:
             'Score': "{} - {}".format(self.score_one, self.score_two),
             'Player Two': Player.get_player(self.player_two).name,
         }
+
+    @staticmethod
+    def get_player_name(index):
+        return Player.get_player(index).name
