@@ -2,11 +2,11 @@ from models.player import Player
 
 
 class Match:
-    def __init__(self, player_one_id, player_two_id):
+    def __init__(self, player_one_id, player_two_id, score_one=0, score_two=0):
         self.player_one = player_one_id
         self.player_two = player_two_id
-        self.score_one = 0
-        self.score_two = 0
+        self.score_one = score_one
+        self.score_two = score_two
 
     def set_result(self, score_one, score_two):
         self.score_one = score_one
@@ -14,7 +14,8 @@ class Match:
 
     @property
     def result(self):
-        return [self.player_one, self.score_one], [self.player_two, self.score_two]
+        return [self.player_one, self.score_one], \
+               [self.player_two, self.score_two]
 
     def total_score(self):
         return self.score_one + self.score_two
@@ -34,13 +35,11 @@ class Match:
         player_two = serialized_match['result'][1][0]
         score_one = serialized_match['result'][0][1]
         score_two = serialized_match['result'][1][1]
-        match = Match(player_one, player_two)
-        match.set_result(score_one, score_two)
-        return match
+        return Match(player_one, player_two, score_one, score_two)
 
     def to_report(self):
         return {
             'Player One': Player.get_player(self.player_one).name,
-            'Score': "{} - {}".format(self.score_one,self.score_two),
+            'Score': "{} - {}".format(self.score_one, self.score_two),
             'Player Two': Player.get_player(self.player_two).name,
         }

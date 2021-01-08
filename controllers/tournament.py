@@ -26,39 +26,51 @@ def index():
 
 
 def new():
-    name = input('Tournament name : ')
-    place = input('Tournament place : ')
+    name = main_controller.input_with_options('Tournament name : ')
+    place = main_controller.input_with_options('Tournament place : ')
 
-    date_regex = '^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$'
-
-    match = None
-    while not match:
-        date_start = input('Tournament start date : ')
-        match = re.match(date_regex, date_start)
-
-    match = None
-    while not match:
-        date_end = input('End date ? (Empty if it\'s a 1-day tournament) ')
-        match = re.match(date_regex, date_end)
+    date_regex = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])/'
+                            r'(0[1-9]|1[0-2])/[0-9]{4}$')
+    date_start = main_controller.input_with_options(
+        'Tournament start date : ',
+        date_regex,
+        'Date format should be: dd/mm/yyyy',
+        loop=True
+    )
+    date_end_regex = re.compile(r'^(0[1-9]|[1-2][0-9]|3[0-1])/'
+                                r'(0[1-9]|1[0-2])/[0-9]{4}$|^$')
+    date_end = main_controller.input_with_options(
+        'End date ? (Empty if it\'s a 1-day tournament) : ',
+        date_end_regex,
+        'Date format should be: dd/mm/yyyy',
+        loop=True
+    )
     date = date_start
     if date_end != "":
-        date += 'to ' + date_end
+        date += ' to ' + date_end
 
-    match = None
-    while not match:
-        round_number = input('Number of rounds : ')
-        match = re.match('^[0-9]+$', round_number)
+    round_number = main_controller.input_with_options(
+        'Number of rounds : ',
+        re.compile('^[0-9]+$'),
+        'Please enter a positive number',
+        loop=True
+    )
 
-    description = input('description : ')
+    description = main_controller.input_with_options('description : ')
 
-    match = None
-    while not match:
-        time_control = input('Time control : \n'
-                             '    1) Bullet\n'
-                             '    2) Blitz\n'
-                             '    3) Rapid\n'
-                             )
-        match = re.match('^[1-3]+$', time_control)
+    time_control_list = ['Bullet', 'Blitz', 'Rapid']
+    text = 'Time control [{}] : \n'
+    for i in range(len(time_control_list)):
+        text += '    ' + str(i) + ') ' + time_control_list[i] + '\n'
+    time_control = main_controller.input_with_options(
+        text,
+        re.compile(r'^[1-3]+$|^[\w|\W]*$'),
+        'Please enter 1, 2 or 3',
+        loop=True
+    )
+    if time_control in ['1', '2', '3']:
+        time_control = time_control_list[int(time_control) - 1]
+
     tournament = Tournament(name, place, date, time_control,
                             description, round_number)
 
@@ -151,66 +163,63 @@ def leaderboard(tournament):
 
 
 def edit(tournament):
-    tournament.name = input_new_or_current(
+    tournament.name = main_controller.input_with_options(
         'Name [{}] : '.format(tournament.name),
-        tournament.name
+        current_value=tournament.name
     )
-    tournament.place = input_new_or_current(
+    tournament.place = main_controller.input_with_options(
         'Tournament place [{}] : '.format(tournament.place),
-        tournament.place
+        current_value=tournament.place
     )
 
-    date_regex_or_current = re.compile(r'^[\w|\W]*$|^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$')
+    date_regex_or_current = re.compile(r'^[\w|\W]*$|'
+                                       r'^(0[1-9]|[1-2][0-9]|3[0-1])'
+                                       r'/(0[1-9]|1[0-2])/[0-9]{4}$')
 
-    date_start = input_new_or_current(
+    date_start = main_controller.input_with_options(
         'Tournament start date [{}] : '.format(tournament.date),
+        date_regex_or_current,
+        'Please enter a date format (dd/mm/yyyy)',
         tournament.date,
-        date_regex_or_current
+        True,
+    )
+    tournament.date = date_start
+
+    date_end = main_controller.input_with_options(
+        'End date ? (Empty if it\'s a 1-day tournament) ',
+        date_regex_or_current,
+        'Please enter a date format (dd/mm/yyyy)',
+        loop=True
     )
 
-    if 'to' in date_start:
-        match = None
-        while not match:
-            date_end = input('End date ? (Empty if it\'s a 1-day tournament) ')
-            match = re.match(date_regex_or_current, date_end)
-        tournament.date = date_start
-        if date_end != "":
-            tournament.date += 'to ' + date_end
+    if date_end != '':
+        tournament.date += ' to ' + date_end
 
-        tournament.rounds_total = int(input_new_or_current(
+    tournament.rounds_total = int(
+        main_controller.input_with_options(
             'Number of rounds [{}] : '.format(tournament.rounds_total),
+            re.compile(r'^[1-3]+$|^[\w|\W]*$'),
+            'Please enter a positive number',
             tournament.rounds_total,
-            re.compile(r'^[1-3]+$|^[\w|\W]*$')
-        ))
+            True
+        )
+    )
 
-    tournament.description = input_new_or_current(
+    tournament.description = main_controller.input_with_options(
         'Current description :\n {} \n'.format(tournament.description),
-        tournament.description
+        current_value=tournament.description
     )
 
-    tournament.time_control = input_new_or_current(
-        'Time control [{}] : \n'
-        '    1) Bullet\n'
-        '    2) Blitz\n'
-        '    3) Rapid\n'.format(tournament.time_control),
+    time_control_list = ['Bullet', 'Blitz', 'Rapid']
+    text = 'Time control [{}] : \n'
+    for i in range(len(time_control_list)):
+        text += '    ' + str(i) + ') ' + time_control_list[i] + '\n'
+    time_control = main_controller.input_with_options(
+        text.format(tournament.time_control),
+        re.compile(r'^[1-3]+$|^[\w|\W]*$'),
+        'Please enter 1, 2 or 3',
         tournament.time_control,
-        re.compile(r'^[1-3]+$|^[\w|\W]*$')
+        True
     )
-
-
-def input_new_or_current(input_text, current_value, regex=re.compile(r'^[\w|\W]*$')):
-
-    value = input_regex(input_text, regex)
-    if input_text == '':
-        value = current_value
-    return value
-
-
-def input_regex(input_text, regex):
-    match = None
-    while not match:
-        value = input(input_text)
-        print(value)
-        match = re.match(regex, value)
-
-    return value
+    if time_control in ['1', '2', '3']:
+        tournament.time_control = time_control_list[int(time_control) - 1]
