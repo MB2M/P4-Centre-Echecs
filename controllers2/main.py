@@ -2,7 +2,7 @@ import re
 
 import pandas as pd
 
-from controllers2 import player as player_controller,\
+from controllers import player as player_controller,\
     tournament as tournament_controller
 from models.tournament import Tournament
 from models.player import Player
