@@ -15,6 +15,7 @@ def menu(tournament):
     print('Tournament : ' + tournament.name)
     print('====================================================')
     print('    0) <== Back')
+    print('    1) Edit tournament settings')
     if tournament.finished():
         print('*** TOURNAMENT IS OVER ***')
     elif len(tournament.players) < 2 * tournament.rounds_total:

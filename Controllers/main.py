@@ -51,14 +51,20 @@ def report_index():
         if tournament_id is not None:
             tournament = Tournament.get_tournament(tournament_id)
             tournament_players = tournament.get_players_by_alpha()
-            players = [Player.get_player(player) for player in tournament_players]
+            players = [
+                Player.get_player(player)
+                for player in tournament_players
+            ]
             report(players, 'players')
     if choice == '4':
         tournament_id = tournament_controller.select_tournament()
         if tournament_id is not None:
             tournament = Tournament.get_tournament(tournament_id)
             tournament_players = tournament.get_players_by_rank()
-            players = [Player.get_player(player) for player in tournament_players]
+            players = [
+                Player.get_player(player)
+                for player in tournament_players
+            ]
             report(players, 'players')
     if choice == '5':
         tournaments = Tournament.TOURNAMENT
@@ -85,15 +91,6 @@ def report_index():
 
 
 def report(list_of_objects, type):
-    if type == 'players':
-        columns = ['last_name', 'first_name', 'birthday', 'gender', 'rank']
-
-    elif type == 'tournaments':
-        columns = ['name', 'date']
-
     data = [object.to_report() for object in list_of_objects]
-
     df = pd.DataFrame(data)
-    # df = pd.DataFrame([vars(object) for object in list_of_objects])
     print(df)
-

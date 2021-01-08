@@ -25,9 +25,10 @@ def add_player():
     first_name = input('First name : ')
 
     match = None
+    regex = '^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$'
     while not match:
         birthday = input('Birthday (dd/mm/yyyy) : ')
-        match = re.match('^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$', birthday)
+        match = re.match(regex, birthday)
 
     gender = input('gender (m/w) : ')
     while gender not in ['m', 'w']:
@@ -61,6 +62,9 @@ def select_player():
     choice = input()
     if choice == '0':
         return None
-    if not re.match('^[0-9]+$', choice) or int(choice) not in range(len(Player.PLAYERS) + 1):
+    if (
+            not re.match('^[0-9]+$', choice)
+            or int(choice) not in range(len(Player.PLAYERS) + 1)
+    ):
         return select_player()
     return int(choice)-1
