@@ -25,27 +25,22 @@ class Match:
                 + Player.get_player(self.result[1][0]).name
                 )
 
-    # modif branch
     def serialize(self):
-        return {
-            'player_one': self.player_one,
-            'player_two': self.player_two,
-            'score_one': self.score_one,
-            'score_two': self.score_two,
-        }
+        return {'result': self.result}
 
     @classmethod
     def deserialize(cls, serialized_match):
-        player_one = serialized_match['player_one']
-        player_two = serialized_match['player_two']
-        score_one = serialized_match['score_one']
-        score_two = serialized_match['score_two']
-
+        player_one = serialized_match['result'][0][0]
+        player_two = serialized_match['result'][1][0]
+        score_one = serialized_match['result'][0][1]
+        score_two = serialized_match['result'][1][1]
         match = Match(player_one, player_two)
         match.set_result(score_one, score_two)
         return match
 
     def to_report(self):
         return {
-            'match_list': self.result_to_string()
+            'Player One': Player.get_player(self.player_one).name,
+            'Score': "{} - {}".format(self.score_one,self.score_two),
+            'Player Two': Player.get_player(self.player_two).name,
         }
