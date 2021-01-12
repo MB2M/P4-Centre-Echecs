@@ -26,8 +26,7 @@ class Player:
         self.gender = gender
         self.rank = rank
 
-    @property
-    def name(self):
+    def __str__(self):
         return self.last_name + ' , ' + self.first_name
 
     @classmethod
@@ -51,7 +50,7 @@ class Player:
 
     @classmethod
     def get_all_by_alpha(cls):
-        return sorted(cls.get_all(), key=lambda player: player.name)
+        return sorted(cls.get_all(), key=lambda player: str(player))
 
     @Decorators.to_db
     def set_rank(self, rank):

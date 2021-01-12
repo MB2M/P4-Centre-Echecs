@@ -1,22 +1,30 @@
 def launch():
-    print('===========')
-    print('Player Menu')
-    print('===========')
-    print('    0) <== Back')
-    print('    1) Create a player')
-    print('    2) Edit player rank')
+    print(
+        '===========',
+        'Player Menu',
+        '===========',
+        '    0) <== Back',
+        '    1) Create a player',
+        '    2) Edit player rank',
+        sep='\n'
+    )
 
 
 def rank(player):
-    print('Edit rank :')
-    print('-----------')
-    print(player.first_name, ',', player.last_name)
-    print('Actual Rank :', player.rank)
-    print('Enter new rank: ')
+    print('Edit rank :',
+          '-----------',
+          player,
+          'Actual Rank :', player.rank,
+          'Enter new rank: ',
+          sep='\n'
+    )
 
 
 def players(players):
-    print('Select a player :')
-    print('    0) <== Back')
+    print(
+        'Select a player :',
+        '    0) <== Back',
+        sep='\n'
+    )
     for i, player in enumerate(players, start=1):
-        print('    ' + str(i) + ') ' + player.name)
+        print('    ' + str(i) + ') ', player)

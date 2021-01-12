@@ -4,8 +4,8 @@ import pandas as pd
 
 from controllers import player as player_controller,\
     tournament as tournament_controller
-from models.tournament import Tournament
 from models.player import Player
+from models.tournament import Tournament
 from views import main as main_view
 
 

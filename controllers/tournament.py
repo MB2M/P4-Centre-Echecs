@@ -159,7 +159,7 @@ def select_tournament():
 
 def leaderboard(tournament):
     for player in tournament.get_suisse_sorted_players():
-        print('[{}]'.format(player[1]), Player.get_player(player[0]).name)
+        print('[{}]'.format(player[1]), Player.get_player(player[0]))
 
 
 def edit(tournament):

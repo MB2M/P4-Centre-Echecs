@@ -21,9 +21,9 @@ class Match:
         return self.score_one + self.score_two
 
     def result_to_string(self):
-        return (Player.get_player(self.result[0][0]).name
+        return (str(Player.get_player(self.result[0][0]))
                 + ' [{}] vs. [{}] '.format(self.score_one, self.score_two)
-                + Player.get_player(self.result[1][0]).name
+                + str(Player.get_player(self.result[1][0]))
                 )
 
     def serialize(self):
@@ -39,11 +39,11 @@ class Match:
 
     def to_report(self):
         return {
-            'Player One': Player.get_player(self.player_one).name,
+            'Player One': str(Player.get_player(self.player_one)),
             'Score': "{} - {}".format(self.score_one, self.score_two),
-            'Player Two': Player.get_player(self.player_two).name,
+            'Player Two': str(Player.get_player(self.player_two))
         }
 
     @staticmethod
     def get_player_name(index):
-        return Player.get_player(index).name
+        return str(Player.get_player(index))

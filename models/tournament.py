@@ -1,8 +1,8 @@
 from tinydb import TinyDB
 
+from models.match import Match
 from models.player import Player
 from models.round import Round
-from models.match import Match
 
 
 class Tournament:
@@ -53,6 +53,9 @@ class Tournament:
         return len(self.players)
 
     def get_suisse_sorted_players(self):
+        """ Sort list of players of the tournament
+        by score and by rank and return the list
+        """
         s = sorted(
             self.players,
             key=lambda player: int(Player.get_player(player[0]).rank),
@@ -72,10 +75,23 @@ class Tournament:
 
     @Decorators.to_db
     def generate_matches(self):
+        """ sort players
+        and creates matches depending of the number of rounds:
+        If the game has 8 players:
+            if it's the first round:
+                Player 1 VS Player 5,
+                Players 2 VS Player 6,
+                etc
+            if it's an other round:
+                Player 1 VS Player 2
+                (except if they have already
+                 played against : Players 1 VS Player 3)
+                Player 3 VS Player 4
+                etc
+        """
         matches = []
         round = self.create_round()
         players = self.get_suisse_sorted_players()
-        print(players)
         if len(self.rounds) == 1:
             for i in range(self.rounds_total):
                 match = Match(players[i][0], players[i + self.rounds_total][0])
@@ -132,7 +148,7 @@ class Tournament:
     def get_players_by_alpha(self):
         return sorted(
             self.get_players(),
-            key=lambda player: Player.get_player(player).name
+            key=lambda player: str(Player.get_player(player))
         )
 
     @Decorators.to_db

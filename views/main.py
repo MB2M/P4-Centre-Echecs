@@ -1,29 +1,40 @@
 def launch():
-    print('========================================')
-    print('Welcome to your Chess Tournament Manager')
-    print('========================================')
+    print(
+        '========================================',
+        'Welcome to your Chess Tournament Manager',
+        '========================================',
+        sep='\n'
+        )
 
 
 def menu():
-    print('What do you want to do?')
-    print('    1) Player Manager')
-    print('    2) Tournament Manager')
-    print('    3) Report')
-    print('    4) Exit Program')
+    print(
+        'What do you want to do?',
+        '    1) Player Manager',
+        '    2) Tournament Manager',
+        '    3) Report',
+        '    4) Exit Program',
+        sep='\n'
+    )
 
 
 def end():
-    print('=============================================')
-    print('Thank you for using Chess Tournament Manager ')
-    print('=============================================')
+    print(
+        '=============================================',
+        'Thank you for using Chess Tournament Manager ',
+        '=============================================',
+        sep='\n'
+        )
 
 
 def report_menu():
-    print('    0) <== Back')
-    print('    1) List of players by alpha')
-    print('    2) List of players by rank')
-    print('    3) List of tournament\'s players by alpha')
-    print('    4) List of tournament\'s players by rank')
-    print('    5) List of all tournaments')
-    print('    6) List of tournament\' rounds')
-    print('    7) List of tournament\' matches')
+    print('    0) <== Back',
+          '    1) List of players by alpha',
+          '    2) List of players by rank',
+          '    3) List of tournament\'s players by alpha',
+          '    4) List of tournament\'s players by rank',
+          '    5) List of all tournaments',
+          '    6) List of tournament\' rounds',
+          '    7) List of tournament\' matches',
+          sep='\n'
+          )

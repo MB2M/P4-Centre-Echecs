@@ -1,18 +1,24 @@
 def launch():
-    print('===============')
-    print('Tournament Menu')
-    print('===============')
-    print('    0) <== Back')
-    print('    1) Create a new tournament')
-    print('    2) Load a tournament')
+    print(
+        '===============',
+        'Tournament Menu',
+        '===============',
+        '    0) <== Back',
+        '    1) Create a new tournament',
+        '    2) Load a tournament',
+        sep='\n'
+    )
 
 
 def menu(tournament):
-    print('====================================================')
-    print('Tournament : ' + tournament.name)
-    print('====================================================')
-    print('    0) <== Back')
-    print('    1) Edit tournament settings')
+    print(
+        '====================================================',
+        'Tournament : ' + tournament.name,
+        '====================================================',
+        '    0) <== Back',
+        '    1) Edit tournament settings',
+        sep='\n'
+    )
     if tournament.finished():
         print('*** TOURNAMENT IS OVER ***')
     elif len(tournament.players) < 2 * tournament.rounds_total:
@@ -31,22 +37,28 @@ def menu(tournament):
 
 
 def scoring_menu(round):
-    print('----------------------------------------------------')
-    print('SCORING the round : ' + round.name)
-    print('----------------------------------------------------')
-    print('Choose the match to score :')
-    print('    0) <== Back')
+    print(
+        '----------------------------------------------------',
+        'SCORING the round : ' + round.name,
+        '----------------------------------------------------',
+        'Choose the match to score :',
+        '    0) <== Back',
+        sep='\n'
+    )
     for i, match in enumerate(round.matches, start=1):
         print('    ' + str(i) + ') ' + match.result_to_string())
 
 
 def result_menu(match):
-    print('Choose the result of the match :')
-    print('    0) <== Back')
-    print('    1) Winner : ' + match.get_player_name(match.player_one))
-    print('    2) Winner : ' + match.get_player_name(match.player_two))
-    print('    3) Draw')
-    print('    4) Unset')
+    print(
+        'Choose the result of the match :',
+        '    0) <== Back',
+        '    1) Winner : ' + match.get_player_name(match.player_one),
+        '    2) Winner : ' + match.get_player_name(match.player_two),
+        '    3) Draw',
+        '    4) Unset',
+        sep='\n'
+    )
 
 
 def tournaments(tournaments):
