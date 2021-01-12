@@ -1,11 +1,11 @@
 #!/usr/local/bin/python
 # coding: utf8
 
-from controllers import main as main_controller
+from controllers.main import MainController
 
 
 def main():
-    return main_controller.index()
+    return MainController().index()
 
 
 if __name__ == "__main__":
