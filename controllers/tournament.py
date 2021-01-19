@@ -63,10 +63,10 @@ class TournamentController:
         time_control_list = ['Bullet', 'Blitz', 'Rapid']
         text = 'Time control [{}] : \n'
         for i in range(len(time_control_list)):
-            text += '    ' + str(i) + ') ' + time_control_list[i] + '\n'
+            text += '    ' + str(i+1) + ') ' + time_control_list[i] + '\n'
         time_control = c.input_with_options(
             text,
-            re.compile(r'^[1-3]+$|^*$'),
+            re.compile(r'^[1-3]+$|^$'),
             'Please enter 1, 2 or 3',
             loop=True
         )
@@ -135,8 +135,7 @@ class TournamentController:
         else:
             return self.score(tournament, round, match)
 
-        tournament.update_players_score(self)
-        # Tournament.save_all_to_db()
+        tournament.update_players_score()
         return self.match_index(tournament, round)
 
     def tournament_index(self):
